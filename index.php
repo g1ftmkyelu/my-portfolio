@@ -5,22 +5,10 @@
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
-<body>
-    <!-- Header -->
-    <header>
-        <h1><i class="fas fa-code"></i>Gift mkyelu</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<body onload="addNavBar()">
 
     <!-- Introduction section -->
     <section id="introduction">
@@ -95,21 +83,6 @@
         </div>
     </section>
 
-    <!-- Skills section -->
-    <section id="skills">
-        <div class="grid-container">
-            <div><i class="fa-brands fa-react"></i></div>
-            <div><i class="fa-brands fa-angular"></i></div>
-            <div><i class="fa-brands fa-php"></i></div>
-            <div><i class="fa-brands fa-html5"></i></div>
-            <div><i class="fa-brands fa-css3"></i></div>
-            <div><i class="fa-brands fa-js"></i></div>
-            <div><i class="fa-brands fa-golang"></i></div>
-            <div><i class="fa-brands fa-java"></i></div>
-        </div>
-
-    </section>
-
     <!-- Footer -->
     <footer>
         <ul class="contact-links">
@@ -120,8 +93,8 @@
     </footer>
 </body>
 
-<script>
-    const typedText = document.querySelector(".typed-text");
+<script src="./assets/js/layout.js"></script>
+<script>    const typedText = document.querySelector(".typed-text");
     const cursor = document.querySelector(".cursor");
 
     const textArray = ["Programmer", "Web Developer", "Dev OPs Specialist", "System Analyst"];
@@ -159,7 +132,6 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         type();
-    })
-</script>
+    })</script>
 
 </html>

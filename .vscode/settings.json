@@ -1,8 +1,5 @@
 {
     "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
-    },
-    "[php]": {
-        "editor.defaultFormatter": null
+        "editor.defaultFormatter": "Jota0222.multi-formatter"
     }
 }

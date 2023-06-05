@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+  </style>
+  <title>My Projects</title>
+</head>
+
+<body onload="onPageLoad()">
+
+<div id="mynav" onload="addNavBar()"></div>
+
+  <section class="filter-box">
+    <label for="text">name</label>
+    <input type="text" placeholder="name..." oninput="filter()" id="text">
+    <label for="technology">technology:</label>
+    <select id="technology" onchange="filterByTechnology()">
+      <option value="">All</option>
+      <option value="html">html</option>
+      <option value="css">css</option>
+      <option value="php">php</option>
+      <option value="javascript">javascript</option>
+      <option value="nodejs">nodejs</option>
+      <option value="express">express</option>
+      <option value="python">python</option>
+      <option value="mysql">mysql</option>
+      <option value="mongodb">mongodb</option>
+    </select>
+    <label for="category">category:</label>
+    <select id="category" onchange="filterByCategory()">
+      <option value="">All</option>
+      <option value="Health Care">Health Care</option>
+      <option value="entertainment">entertainment</option>
+      <option value="education">education</option>
+      <option value="religion">religion</option>
+    </select>
+    <button onclick="resetFilters()">Reset</button>
+  </section>
+  <div id="projects"></div>
+
+  <div id="overlay" onclick="closeModal()"></div>
+  <div id="modal">
+    <div class="dialog">
+      <span id="modalContent">
+
+      </span>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+  <script>
+    function onPageLoad() {
+      displayProjects();
+      addNavBar();
+      addFooter();
+    }
+  </script>
+  <script src="../assets/js/projects.js"> </script>
+  <script src="../assets/js/layout.js"></script>
+</body>
+
+</html>
