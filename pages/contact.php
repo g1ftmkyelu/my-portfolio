@@ -1,22 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/contact.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
-    <title>Contact</title>
-    <style>
-      #map { height: 80vh; display:none; }
-      #result { font-size:1.5rem; font-weight:bold; text-align:center; margin-bottom:.5rem; display:none; }
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/contact.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+  <title>Contact</title>
+  <style>
+    #map {
+      height: 80vh;
+      display: none;
+    }
+
+    #result {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: .5rem;
+      display: none;
+    }
   </style>
 </head>
+
 <body onload="onPageLoad()">
+  <?php include '../includes/navbar.php' ?>
   <main>
-    <button type="button" id="showPosition">Show Position</button>
     <div id="result"></div>
     <div id="map"></div>
     <section>
@@ -47,110 +59,72 @@
 </body>
 
 <script>
-    function onPageLoad() {
-      addNavBar();
-      addFooter();
+ function onPageLoad() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+      let result = document.querySelector("#result");
+      result.style.display = "block";
+      result.innerText = "Getting the position information...";
+    } else {
+      alert('Your browser does not support geolocation');
     }
+  }
 
+  function successCallback(position) {
+    let result = document.querySelector("#result");
+    result.style.display = "block";
+    result.innerText = "Lat: " + position.coords.latitude + ", Long: " + position.coords.longitude;
 
+    let mapContainer = document.querySelector("#map");
+    mapContainer.style.display = "block";
 
-  </script>
+    const map = L.map("map").setView([position.coords.latitude, position.coords.longitude], 13);
 
-<script>
-class Geolocation {
-    // on success
-    successCallback(position){
-        let result = document.querySelector("#result") // get the result div
-        result.style.display = "block" // show the result div
-        result.innerText = "Lat: " + position.coords.latitude + ", Long: " + position.coords.longitude // display the latitude and longitude
+    const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
-        let mapContainer = document.querySelector("#map") // get the map container
-mapContainer.style.display = "block" // show the map container
+    const marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+  }
 
-const map = L.map("map").setView(
-    [position.coords.latitude, position.coords.longitude],
-    13
-) // create a map and set the view to the user's location
-
-const tiles = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        maxZoom: 19,
-        attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  function errorCallback(error) {
+    let result = document.querySelector("#result");
+    result.style.display = "block";
+    if (error.code == 1) {
+      result.innerText = "You have not given permission to access your location.";
+    } else if (error.code == 2) {
+      result.innerText = "Your location is unavailable.";
+    } else if (error.code == 3) {
+      result.innerText = "The request to get your location timed out.";
+    } else {
+      result.innerText = "An unknown error occurred.";
     }
-).addTo(map) // add the tiles to the map
-
-const marker = L.marker([
-    position.coords.latitude,
-    position.coords.longitude
-]).addTo(map) // add a marker to the map
-
-    }
-
-    // on error
-    errorCallback(error){
-        let result = document.querySelector("#result") // get the result div
-        result.style.display = "block" // show the result div
-        if(error.code == 1) { // if the user denied the request
-            result.innerText = "You have not given permission to access your location."
-        }else if(error.code == 2) { // if the position is unavailable
-            result.innerText = "Your location is unavailable."
-        }else if(error.code == 3) { // if the request times out
-            result.innerText = "The request to get your location timed out."
-        }else{ // if something else went wrong
-            result.innerText = "An unknown error occurred."
-        }
-    }
-
-
-    showPosition(){
-        if(navigator.geolocation) { // if the browser supports geolocation
-            navigator.geolocation.getCurrentPosition(
-                this.successCallback,
-                this.errorCallback
-            ) // get the user's location
-            let result = document.querySelector("#result")
-            result.style.display = "block"
-            result.innerText = "Getting the position information..."
-        }else{
-            alert('Your browser does not support geolocation') // if the browser doesn't support geolocation
-        }
-    }
-}
-
-const showPosition = document.querySelector("#showPosition")
-showPosition.addEventListener("click", function (e) {
-    e.preventDefault()
-    let result = document.querySelector("#result")
-    result.style.display = "block"
-    new Geolocation().showPosition() // show the user's location
-})
-
-
+  }
 </script>
 
 
-<script>
 
+
+<script>
   const form = document.getElementById('contactForm');
 
 
   form.addEventListener('submit', function(e) {
-    e.preventDefault(); 
+    e.preventDefault();
 
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const message = document.getElementById('message').value;
 
-   
+
     if (!name || !email || !message) {
       console.error('Please fill in all fields.');
       return;
     }
 
-    
+
     if (!isValidEmail(email)) {
       console.error('Please enter a valid email address.');
       return;
@@ -158,10 +132,10 @@ showPosition.addEventListener("click", function (e) {
 
     const xhr = new XMLHttpRequest();
 
-    
+
     xhr.onload = function() {
       if (xhr.status === 200) {
-        console.log(xhr.responseText); 
+        console.log(xhr.responseText);
       } else {
         console.error('An error occurred.');
       }
@@ -181,5 +155,6 @@ showPosition.addEventListener("click", function (e) {
   }
 </script>
 
-  <script src="../assets/js/layout.js"></script>
+<script src="../assets/js/layout.js"></script>
+
 </html>

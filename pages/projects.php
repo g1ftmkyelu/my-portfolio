@@ -9,7 +9,7 @@
 
 <body onload="onPageLoad()">
 
-<div id="mynav" onload="addNavBar()"></div>
+<?php include '../includes/navbar.php'?>
 
   <section class="filter-box">
     <label for="text">name</label>
@@ -51,7 +51,7 @@
   <script>
     function onPageLoad() {
       displayProjects();
-      addNavBar();
+
       addFooter();
     }
   </script>
