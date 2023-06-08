@@ -46,7 +46,7 @@
 </section>
 
 <!-- Featured Projects section -->
-<section id="project-section" onload="displayProjects()">
+<section id="project-section">
     <div id="projects"></div>
 </section>
 
