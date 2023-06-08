@@ -82,9 +82,6 @@
       })
       .catch(error => console.error(error));
 
-
-
-
   }
 
   function onPageLoad() {
