@@ -10,4 +10,4 @@
     <link rel="stylesheet" href="./assets/css/contact.css">
 </head>
 
-<body>
+<body onload="displayProjects()">

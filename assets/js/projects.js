@@ -9,7 +9,7 @@ const headers = new Headers({
   });
 
   
-  fetch('../assets/data/projects.json', { headers })
+  fetch('http://localhost/my-portfolio/api/getProjects.php', { headers })
     .then(response => response.json())
     .then(data => {
       projectsData = data;
@@ -17,9 +17,6 @@ const headers = new Headers({
       displayProjects()
     })
     .catch(error => console.error(error));
-
-
-
 
 
 const displayProjects = () => {
@@ -37,7 +34,7 @@ const displayProjects = () => {
     showMoreButton.style.padding = "10px";
     showMoreButton.style.width = "130px";
     showMoreButton.style.marginTop = "10px";
-    showMoreButton.innerHTML = "View More";
+    showMoreButton.innerHTML = "More Details...";
 
     image.width = 300;
     image.height = 200;
@@ -45,7 +42,7 @@ const displayProjects = () => {
 
     image.src = project.image;
     titleLabel.innerText = project.name;
-    descriptionLabel.innerText = project.description;
+   
 
     showMoreButton.onclick = () => openModal(project);
 
@@ -80,7 +77,7 @@ const filterByTechnology = () => {
   const value = input.value.trim().toLowerCase();
 
   const filteredProjects = value
-    ? projectsData.filter(project => project.technologies.includes(value))
+    ? projectsData.filter(project => project.technology && project.technology.toLowerCase().includes(value))
     : projectsData;
 
   displayFilteredProjects(filteredProjects);
@@ -104,17 +101,20 @@ const displayFilteredProjects = (filteredProjects) => {
 };
 
 const resetFilters = () => {
-   const headers = new Headers({
-    'Content-Type': 'application/json'
-  });
+
+  const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
   
-  fetch('../assets/data/projects.json', { headers })
-    .then(response => response.json())
-    .then(data => {
-      projectsData = data;
-      console.log(projectsData);
-    })
-    .catch(error => console.error(error));
+    
+    fetch('http://localhost/my-portfolio/api/getProjects.php', { headers })
+      .then(response => response.json())
+      .then(data => {
+        projectsData = data;
+        console.log(projectsData);
+   
+      })
+      .catch(error => console.error(error));
   displayProjects();
 };
 
@@ -139,7 +139,7 @@ const openModal = (project) => {
   
   const image = document.createElement('img');
   image.width=500;
-  image.height=500;
+  image.height=400;
   image.src = project.image;
 
   const titleLabel = document.createElement('h2');

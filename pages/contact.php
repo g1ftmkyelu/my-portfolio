@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/contact.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
@@ -14,6 +15,8 @@
     #map {
       height: 80vh;
       display: none;
+      border-top: 5px solid green;
+      border-bottom: 5px solid green;
     }
 
     #result {
@@ -29,28 +32,28 @@
 <body onload="onPageLoad()">
   <?php include '../includes/navbar.php' ?>
   <main>
-    <div id="result"></div>
-    <div id="map"></div>
+    <h1>My Contact Information</h1>
     <section>
-      <h2>Contact Information</h2>
-      <ul>
-        <li><strong>Email:</strong> mkyelugift@gmail.com</li>
-        <li><strong>Phone:</strong> +265 995 751 617</li>
-        <li><strong>Address:</strong>Luwinga, Mzuzu, Northen region, Malawi</li>
+      <ul style="list-style: none;">
+        <li id="userEmail"><i class="fa fa-envelope"></i><strong>Email:</strong> </li>
+        <li id="userPhoneNumber"><i class="fa fa-phone"></i><strong>Phone:</strong></li>
+        <li id="userAddress"><i class="fa fa-location"></i><strong>Address:</strong></li>
       </ul>
     </section>
+    <div id="result"></div>
+    <div id="map"></div>
 
     <section id="form-container">
       <h2>Contact Form</h2>
       <form id="contactForm">
         <label for="name">Name:</label>
-        <input type="text" id="name" required>
+        <input type="text" id="name" placeholder="your name" required>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" required>
+        <input type="email" id="email" placeholder="your email" required>
 
         <label for="message">Message:</label>
-        <textarea id="message" required></textarea>
+        <textarea id="message" placeholder="your message..." required></textarea>
 
         <button type="submit">submit</button>
       </form>
@@ -59,12 +62,41 @@
 </body>
 
 <script>
- function onPageLoad() {
+  function setData() {
+    mydata = [];
+    const email = document.getElementById('userEmail');
+    const phoneNumber = document.getElementById('userPhoneNumber');
+    const location = document.getElementById('userAddress')
+
+    fetch('http://localhost/my-portfolio/api/getUserDetails.php', {
+        headers
+      })
+      .then(response => response.json())
+      .then(data => {
+        mydata = data;
+
+    email.innerHTML = mydata[0].email
+    phoneNumber.innerHTML = mydata[0].phoneNumber
+    location.innerHTML = mydata[0].location
+
+      })
+      .catch(error => console.error(error));
+
+
+
+
+  }
+
+  function onPageLoad() {
+  
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
       let result = document.querySelector("#result");
+      const loader = document.createElement('div');
+      loader.classList.add('loader');
+      result.appendChild(loader);
       result.style.display = "block";
-      result.innerText = "Getting the position information...";
+      result.innerText = "Please wait while we load the geo location...";
     } else {
       alert('Your browser does not support geolocation');
     }
@@ -108,7 +140,6 @@
 
 <script>
   const form = document.getElementById('contactForm');
-
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();

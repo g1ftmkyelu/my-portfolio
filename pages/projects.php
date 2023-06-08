@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
@@ -9,7 +10,7 @@
 
 <body onload="onPageLoad()">
 
-<?php include '../includes/navbar.php'?>
+  <?php include '../includes/navbar.php' ?>
 
   <section class="filter-box">
     <label for="text">name</label>
@@ -17,23 +18,20 @@
     <label for="technology">technology:</label>
     <select id="technology" onchange="filterByTechnology()">
       <option value="">All</option>
-      <option value="html">html</option>
-      <option value="css">css</option>
-      <option value="php">php</option>
-      <option value="javascript">javascript</option>
+      <option value="laravel">laravel</option>
+      <option value="ruby on rails">ruby on rails</option>
       <option value="nodejs">nodejs</option>
+      <option value="nuxtjs">nuxtjs</option>
+      <option value="nextjs">nextjs</option>
       <option value="express">express</option>
-      <option value="python">python</option>
-      <option value="mysql">mysql</option>
-      <option value="mongodb">mongodb</option>
     </select>
     <label for="category">category:</label>
     <select id="category" onchange="filterByCategory()">
       <option value="">All</option>
-      <option value="Health Care">Health Care</option>
+      <option value="health">health</option>
       <option value="entertainment">entertainment</option>
+      <option value="utility">utility</option>
       <option value="education">education</option>
-      <option value="religion">religion</option>
     </select>
     <button onclick="resetFilters()">Reset</button>
   </section>
@@ -56,7 +54,7 @@
     }
   </script>
   <script src="../assets/js/projects.js"> </script>
-  <script src="../assets/js/layout.js"></script>
+
 </body>
 
 </html>
