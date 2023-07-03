@@ -23,42 +23,56 @@ const displayProjects = () => {
   closeModal();
   projectContainer.innerHTML = "";
 
-  projectsData.forEach(project => {
-    const component = document.createElement('div');
-    const image = document.createElement('img');
-    const titleLabel = document.createElement('h2');
-    const descriptionLabel = document.createElement('p');
-    const showMoreButton = document.createElement('button');
-    showMoreButton.classList.add('show-more');
-
-    showMoreButton.style.padding = "10px";
-    showMoreButton.style.width = "130px";
-    showMoreButton.style.marginTop = "10px";
-    showMoreButton.innerHTML = "More Details...";
-
-    image.width = 300;
-    image.height = 200;
-    image.style.position = "center";
-
-    image.src = project.image;
-    titleLabel.innerText = project.name;
-   
-
-    showMoreButton.onclick = () => openModal(project);
-
-    component.appendChild(image);
-    component.appendChild(titleLabel);
-    component.appendChild(descriptionLabel);
-    component.appendChild(showMoreButton);
-
-    component.style.width = "400px";
-    component.style.padding = "10px";
-    component.style.margin = "17px";
-    component.style.borderRadius = "5px";
-    component.style.boxShadow = "1px 1px 10px rgba(0,0,0,0.3)";
-
-    projectContainer.appendChild(component);
-  });
+  if (projectsData.length<=0) {
+    const notFoundMessage=document.createElement("h1");
+    notFoundMessage.style.fontWeight="bold";
+    notFoundMessage.style.marginTop="40vh";
+    notFoundMessage.innerHTML = "No Projects Found:(";
+    projectContainer.appendChild(notFoundMessage);
+  } else {
+    
+      projectsData.forEach(project => {
+        const component = document.createElement('div');
+        const image = document.createElement('img');
+        const titleLabel = document.createElement('h2');
+        const descriptionLabel = document.createElement('p');
+        const showMoreButton = document.createElement('button');
+        const arrowRight=document.createElement('i');
+        arrowRight.classList.add("fa");
+        arrowRight.classList.add('fa-circle-arrow-right');
+        showMoreButton.classList.add('show-more');
+    
+        showMoreButton.style.padding = "10px";
+        showMoreButton.style.marginTop = "10px";
+        showMoreButton.innerHTML = "view project";
+        showMoreButton.appendChild(arrowRight);
+    
+        image.width = 300;
+        image.height = 200;
+        image.style.position = "center";
+    
+        image.src = project.image;
+        titleLabel.innerText = project.name;
+       
+    
+        showMoreButton.onclick = () => openModal(project);
+        component.style.backgroundColor="#333";
+        component.style.width = "400px"; 
+        component.style.padding = "10px";
+        component.style.margin = "17px";
+        component.style.borderRadius = "5px";
+        component.style.boxShadow = "1px 1px 10px rgba(0,0,0,0.3)";
+    
+    
+        component.appendChild(image);
+        component.appendChild(titleLabel);
+        component.appendChild(descriptionLabel);
+        component.appendChild(showMoreButton);
+    
+        projectContainer.appendChild(component);
+      });
+    
+  }
 };
 
 const filter = () => {
@@ -123,22 +137,42 @@ const openModal = (project) => {
   const overlay = document.getElementById('overlay');
 
   const dialog = document.createElement('div');
+  dialog.style.width=900;
+  dialog.style.height=700;
   dialog.classList.add('dialog');
 
-  const redirectButton = document.createElement('button');
-  redirectButton.innerHTML="go to project"
-  redirectButton.style.padding="10px"
-  redirectButton.style.fontSize="30px"
-  redirectButton.style.backgroundColor="green"
-  redirectButton.style.color="white"
-  redirectButton.style.border="none"
-  redirectButton.onclick=(() =>{
-    window.location=project.url;
-  })
+
+
 
   
   const image = document.createElement('img');
-  image.width=500;
+  const progress = document.createElement('progress');
+  progress.value = project.completion_level;
+  progress.max = 100;
+  progress.style.height = '20px';
+  
+  // Set the fill color to green
+  progress.style.backgroundColor = 'green';
+  
+  // Append a label
+  const label = document.createElement('label');
+  label.textContent = 'Completion Level:';
+  const percentage= document.createElement('label');
+  percentage.textContent=project.completion_level+"%";
+  
+  // Append the progress bar and label to a container element
+  const container = document.createElement('div');
+  container.style.marginTop='100px'
+  container.appendChild(label);
+  container.appendChild(progress);
+  container.appendChild(percentage);
+  
+  progress.max=100;
+  
+
+
+
+  image.width=900;
   image.height=400;
   image.src = project.image;
 
@@ -151,11 +185,15 @@ const openModal = (project) => {
   const closeButton = document.createElement('button');
   closeButton.classList.add('close-button');
   closeButton.style.position="absolute";
-  closeButton.style.fontSize='70px';
+  closeButton.style.top='10px';
+  closeButton.style.right='10px';
+  closeButton.style.borderRadius='100%';
+  closeButton.style.fontSize='50px';
   closeButton.style.color='white';
   closeButton.style.background='red';
   closeButton.style.border='none';
   closeButton.style.width='90px'
+  closeButton.style.cursor='pointer';
   closeButton.innerHTML = '&times;';
   closeButton.onclick = () => closeModal();
 
@@ -164,7 +202,7 @@ const openModal = (project) => {
   dialog.appendChild(image);
   dialog.appendChild(titleLabel);
   dialog.appendChild(descriptionLabel);
-  dialog.appendChild(redirectButton);
+  dialog.appendChild(container);
 
   modal.innerHTML = '';
   modal.appendChild(dialog);

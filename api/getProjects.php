@@ -1,9 +1,9 @@
 <?php
-include 'databaseConnection.php';
+    include 'databaseConnection.php';
 
 $projects = [];
 
-$projectQuery = "SELECT * FROM project";
+$projectQuery = "SELECT * FROM projects";
 $projectResult = $conn->query($projectQuery);
 
 if ($projectResult->num_rows > 0) {

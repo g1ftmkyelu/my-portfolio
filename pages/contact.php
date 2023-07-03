@@ -8,23 +8,25 @@
   <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/contact.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
   <title>Contact</title>
   <style>
-    #map {
-      height: 80vh;
-      display: none;
-      border-top: 5px solid green;
-      border-bottom: 5px solid green;
-    }
+
 
     #result {
-      font-size: 1.5rem;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: .5rem;
-      display: none;
+      min-width: 1300px;
+    }
+
+    .up {
+      display: flex;
+      justify-content: space-evenly;
+
+    }
+
+    iframe{
+      border: 21px solid green;
+    }
+    body{
+      background-color: lightgray;
     }
   </style>
 </head>
@@ -32,16 +34,26 @@
 <body onload="onPageLoad()">
   <?php include '../includes/navbar.php' ?>
   <main>
-    <h1>My Contact Information</h1>
-    <section>
-      <ul style="list-style: none;">
-        <li id="userEmail"><i class="fa fa-envelope"></i><strong>Email:</strong> </li>
-        <li id="userPhoneNumber"><i class="fa fa-phone"></i><strong>Phone:</strong></li>
-        <li id="userAddress"><i class="fa fa-location"></i><strong>Address:</strong></li>
-      </ul>
-    </section>
-    <div id="result"></div>
-    <div id="map"></div>
+    <div class="up">
+      <section>
+        <h1>My Contact Information</h1>
+        <ul style="list-style: none;">
+          <strong>Name:</strong>
+          <li id="userName"></i></li>
+          <strong><i class="fa fa-envelope"></i>My Email Address</strong>
+          <li id="userEmail"><i class="fa fa-envelope"></i> </li>
+          <strong><i class="fa fa-phone"></i>my Phone Number</strong>
+          <li id="userPhoneNumber"></li>
+          <strong><i class="fa fa-location"></i>My Residential Location</strong>
+          <li id="userAddress"></li>
+        </ul>
+      </section>
+      <div id="result"></div>
+      <div>
+        <h2>My Location</h2>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3910.8027169170323!2d33.9954007!3d-11.421860700000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x191d3039d0f8ae75%3A0xf0f00e912b55adf2!2sMzuzu%20University!5e0!3m2!1sen!2smw!4v1687663967642!5m2!1sen!2smw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
 
     <section id="form-container">
       <h2>Contact Form</h2>
@@ -75,60 +87,52 @@
       .then(data => {
         mydata = data;
 
-    email.innerHTML = mydata[0].email
-    phoneNumber.innerHTML = mydata[0].phoneNumber
-    location.innerHTML = mydata[0].location
+        email.innerHTML = mydata[0].email
+        phoneNumber.innerHTML = mydata[0].phoneNumber
+        location.innerHTML = mydata[0].location
 
       })
       .catch(error => console.error(error));
 
   }
 
+
+
   function onPageLoad() {
-  
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-      let result = document.querySelector("#result");
-      const loader = document.createElement('div');
-      loader.classList.add('loader');
-      result.appendChild(loader);
-      result.style.display = "block";
-      result.innerText = "Please wait while we load the geo location...";
-    } else {
-      alert('Your browser does not support geolocation');
-    }
+
+    getProfile();
   }
 
-  function successCallback(position) {
-    let result = document.querySelector("#result");
-    result.style.display = "block";
-    result.innerText = "Lat: " + position.coords.latitude + ", Long: " + position.coords.longitude;
 
-    let mapContainer = document.querySelector("#map");
-    mapContainer.style.display = "block";
+  function getProfile() {
 
-    const map = L.map("map").setView([position.coords.latitude, position.coords.longitude], 13);
 
-    const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    const nameLabel = document.getElementById('userName');
+    const emailLabel = document.getElementById('userEmail');
+    const addressLabel = document.getElementById('userAddress');
+    const phoneNoLabel = document.getElementById('userPhoneNumber');
 
-    const marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-  }
 
-  function errorCallback(error) {
-    let result = document.querySelector("#result");
-    result.style.display = "block";
-    if (error.code == 1) {
-      result.innerText = "You have not given permission to access your location.";
-    } else if (error.code == 2) {
-      result.innerText = "Your location is unavailable.";
-    } else if (error.code == 3) {
-      result.innerText = "The request to get your location timed out.";
-    } else {
-      result.innerText = "An unknown error occurred.";
-    }
+
+    let profileData;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+
+
+    fetch('http://localhost/my-portfolio/api/getUserDetails.php', {
+        headers
+      })
+      .then(response => response.json())
+      .then(data => {
+        profileData = data[0];
+        nameLabel.innerHTML = profileData.name;
+        emailLabel.innerHTML = profileData.email;
+        addressLabel.innerHTML = profileData.adress;
+        phoneNoLabel.innerHTML = profileData.phoneNumber;
+        console.log(profileData);
+      })
+      .catch(error => console.error(error));
   }
 </script>
 
