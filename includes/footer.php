@@ -53,7 +53,7 @@
                 .then(response => response.json())
                 .then(data => {
 
-                    const trimmedArray = data.slice(0, 3);
+                    const trimmedArray = data.slice(0, 4);
 
 
                     trimmedArray.forEach(project => {

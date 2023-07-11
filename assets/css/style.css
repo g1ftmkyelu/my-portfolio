@@ -273,6 +273,80 @@ footer ul li a {
 
 
 
+/* Slider Carousel */
+.slider {
+  width: 100vh;
+  height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  flex: 0 0 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+}
+
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Make the carousel animation automatic */
+@keyframes carousel {
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-100%);
+  }
+
+  45% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(-200%);
+  }
+
+  70% {
+    transform: translateX(-200%);
+  }
+
+  75% {
+    transform: translateX(-300%);
+  }
+
+  95% {
+    transform: translateX(-300%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.slider-inner {
+  animation: carousel 10s infinite;
+}
+
+
+
 /* Media Queries */
 @media (max-width: 768px) {
   #introduction img {

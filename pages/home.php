@@ -20,7 +20,7 @@
 
 <section id="project-section">
     <section class="game-section">
-        <h2 style="color:white">featured projects</h2>
+        <h2 style="color:white">MY SKILLS</h2>
         <div class="owl" id="cont">
 
 
